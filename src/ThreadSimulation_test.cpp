@@ -4,20 +4,14 @@
 
 namespace {
 
-void noMustEatCountConstructor(int die, int eat, int sleep) {
-    ThreadSimulation simu(die, eat, sleep);
-    EXPECT_EQ(simu.getTimeToDie(), die);
-    EXPECT_EQ(simu.getTimeToEat(), eat);
-    EXPECT_EQ(simu.getTimeToSleep(), sleep);
-    EXPECT_EQ(simu.getMustEatCount(), -1);
+void noMustEatCountConstructor(int total, int die, int eat, int sleep) {
+    ThreadSimulation simu(total, die, eat, sleep);
+    EXPECT_EQ(simu.getTotalPhilosophers(), total);
 }
 
-void mustEatCountConstructor(int die, int eat, int sleep, int mustEat) {
-    ThreadSimulation simu(die, eat, sleep, mustEat);
-    EXPECT_EQ(simu.getTimeToDie(), die);
-    EXPECT_EQ(simu.getTimeToEat(), eat);
-    EXPECT_EQ(simu.getTimeToSleep(), sleep);
-    EXPECT_EQ(simu.getMustEatCount(), mustEat);
+void mustEatCountConstructor(int total, int die, int eat, int sleep, int mustEat) {
+    ThreadSimulation simu(total, die, eat, sleep, mustEat);
+    EXPECT_EQ(simu.getTotalPhilosophers(), total);
 }
 
 } // namespace
@@ -25,29 +19,29 @@ void mustEatCountConstructor(int die, int eat, int sleep, int mustEat) {
 TEST(ThreadSimulationTest, constructor) {
     // Constructor without the mustEatCount specified
     {
-        SCOPED_TRACE("ThreadSimulation(1, 2, 3)");
-        noMustEatCountConstructor(1, 2, 3);
+        SCOPED_TRACE("ThreadSimulation(1, 2, 3, 4)");
+        noMustEatCountConstructor(1, 2, 3, 4);
     }
     {
-        SCOPED_TRACE("ThreadSimulation(500, 34, 455)");
-        noMustEatCountConstructor(500, 34, 455);
+        SCOPED_TRACE("ThreadSimulation(500, 34, 455, 4)");
+        noMustEatCountConstructor(500, 34, 455, 4);
     }
     {
-        SCOPED_TRACE("ThreadSimulation(2, 5, 454)");
-        noMustEatCountConstructor(2, 5, 454);
+        SCOPED_TRACE("ThreadSimulation(2, 5, 454, 356)");
+        noMustEatCountConstructor(2, 5, 454, 356);
     }
 
     // Constructor with mustEatCount specified
     {
-        SCOPED_TRACE("ThreadSimulation(1, 2, 3, 4)");
-        mustEatCountConstructor(1, 2, 3, 4);
+        SCOPED_TRACE("ThreadSimulation(1, 2, 3, 4, 5)");
+        mustEatCountConstructor(1, 2, 3, 4, 5);
     }
     {
-        SCOPED_TRACE("ThreadSimulation(4, 3, 3, 4)");
-        mustEatCountConstructor(4, 3, 3, 4);
+        SCOPED_TRACE("ThreadSimulation(4, 3, 3, 4, 5)");
+        mustEatCountConstructor(4, 3, 3, 4, 5);
     }
     {
-        SCOPED_TRACE("ThreadSimulation(100, 200, 300, 400)");
-        mustEatCountConstructor(100, 200, 300, 400);
+        SCOPED_TRACE("ThreadSimulation(100, 200, 300, 400, 550)");
+        mustEatCountConstructor(100, 200, 300, 400, 550);
     }
 }

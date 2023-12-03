@@ -1,5 +1,10 @@
 #pragma once
 
+#include "Philosophers.h"
+
+#include <thread>
+#include <vector>
+
 /*
     threads???
     time_to_die
@@ -13,17 +18,16 @@
 
 class ThreadSimulation {
 private:
-    const int m_timeToDie;
-    const int m_timeToEat;
-    const int m_timeToSleep;
-    const int m_mustEatCount;
+    const int m_totalPhilosophers;
+    std::vector<Philosophers> m_philo;
+    std::vector<Forks> m_forks;
     // thread of philosphers?
 public:
-    ThreadSimulation(int timeToDie, int timeToEat, int timeToSleep);
-    ThreadSimulation(int timeToDie, int timeToEat, int timeToSleep, int mustEatCount);
+    ThreadSimulation(int total, int timeToDie, int timeToEat, int timeToSleep);
+    ThreadSimulation(int total, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount);
 
-    int getTimeToDie(void) const;
-    int getTimeToEat(void) const;
-    int getTimeToSleep(void) const;
-    int getMustEatCount(void) const;
+    int getTotalPhilosophers(void) const;
+
+    void initForks();
+    void initPhilosophers(int timeToDie, int timeToEat, int timeToSleep, int mustEatCount);
 };

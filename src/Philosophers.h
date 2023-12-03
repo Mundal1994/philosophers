@@ -1,34 +1,50 @@
 #pragma once
-/*
 
-Philosopher {
-    number: 
-    right_fork_in_use: 
-    left_fork_in_use (needs to be pointer to other philosopher):
-    stateChange: 
-}
+#include "Forks.h"
 
-Any state change of a philosopher must be formatted as follows:
-◦ timestamp_in_ms X has taken a fork
-◦ timestamp_in_ms X is eating
-◦ timestamp_in_ms X is sleeping
-◦ timestamp_in_ms X is thinking
-◦ timestamp_in_ms X died
-Replace timestamp_in_ms with the current timestamp in milliseconds
-and X with the philosopher number.
-*/
+#include <array>
+#include <memory>
+#include <thread>
+
 class Philosophers {
-private:
+public:
     enum State {
+        FORK,
         EATING,
         SLEEPING,
         THINKING,
+        DEAD,
+        FINISHED,
+    };
+
+    Philosophers(int nbr, State state, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount, Forks* forkLeft, Forks* forkRight, std::chrono::system_clock::time_point startTimer);
+
+    int64_t currentTimeInMilliSeconds();
+
+    void pickUpFork();
+    void startEating();
+    void goToSleep();
+    void startThinking();
+
+    void startStateLogic();
+    void changeState();
+    void checkIfDead();
+private:
+    enum ForkSide {
+        LEFT = 0,
+        RIGHT = 1,
     };
 
     const int m_nbr;
-    bool m_rightForkInUse;// have these be their own static class
-    bool m_leftForkInUse;// have this be their own static class
-    State m_stateChange;
-public:
-    Philosophers(int nbr);
+    const std::chrono::milliseconds m_timeToDie;
+    const std::chrono::milliseconds m_timeToEat;
+    const std::chrono::milliseconds m_timeToSleep;
+    const int m_mustEatCount;
+    int m_eatCount;
+    std::chrono::system_clock::time_point m_startTimer;
+    std::chrono::system_clock::time_point m_lastMealTimer;
+
+    State m_state;
+    std::array<Forks*, 2> m_forks;
+    std::thread m_thread;
 };

@@ -1,7 +1,6 @@
 
 #include "ThreadSimulation.h"
 
-#include <iostream>
 #include <gtest/gtest.h>
 /*
 
@@ -48,15 +47,8 @@ bool isDigit(int argc, char **argv) {
     int i = 1;
     while (i < argc) {
         int j = 0;
-        int commaCount = 0;
         while (argv[i][j] != '\0') {
-            if (argv[i][j] == 46) {
-                commaCount++;
-                if (commaCount > 1) {
-                    std::cout << "Too many commas" << std::endl;
-                    return false;
-                }
-            } else if (argv[i][j] < 48 || argv[i][j] > 57) {
+            if (argv[i][j] < 48 || argv[i][j] > 57) {
                 std::cout << "Not a digit" << std::endl;
                 return false;
             }
