@@ -1,0 +1,5 @@
+if(EXISTS "/home/molesen/Hive/philo/build/philo[1]_tests.cmake")
+  include("/home/molesen/Hive/philo/build/philo[1]_tests.cmake")
+else()
+  add_test(philo_NOT_BUILT philo_NOT_BUILT)
+endif()

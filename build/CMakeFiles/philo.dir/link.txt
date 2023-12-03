@@ -1,0 +1,1 @@
+/usr/bin/c++   -Wall -Werror -Wextra   CMakeFiles/philo.dir/src/main.cpp.o CMakeFiles/philo.dir/src/ThreadSimulation.cpp.o CMakeFiles/philo.dir/src/ThreadSimulation_test.cpp.o  -o philo  lib/libgtest.a -lpthread 

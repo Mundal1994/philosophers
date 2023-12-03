@@ -1,0 +1,1 @@
+set( philo_TESTS)
