@@ -19,25 +19,11 @@ private:
     const int m_mustEatCount;
     // thread of philosphers?
 public:
-    ThreadSimulation(int timeToDie, int timeToEat, int timeToSleep)
-        : m_timeToDie(timeToDie), m_timeToEat(timeToEat), m_timeToSleep(timeToSleep), m_mustEatCount(-1) {};
+    ThreadSimulation(int timeToDie, int timeToEat, int timeToSleep);
+    ThreadSimulation(int timeToDie, int timeToEat, int timeToSleep, int mustEatCount);
 
-    ThreadSimulation(int timeToDie, int timeToEat, int timeToSleep, int mustEatCount)
-        : m_timeToDie(timeToDie), m_timeToEat(timeToEat), m_timeToSleep(timeToSleep), m_mustEatCount(mustEatCount) {};
-
-    int getTimeToDie(void) const {
-        return (m_timeToDie);
-    }
-
-    int getTimeToEat(void) const {
-        return (m_timeToEat);
-    }
-
-    int getTimeToSleep(void) const {
-        return (m_timeToSleep);
-    }
-
-    int getMustEatCount(void) const {
-        return (m_mustEatCount);
-    }
+    int getTimeToDie(void) const;
+    int getTimeToEat(void) const;
+    int getTimeToSleep(void) const;
+    int getMustEatCount(void) const;
 };
