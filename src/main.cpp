@@ -11,13 +11,6 @@ philosopherBase {
     time_to_sleep_timer
 }
 
-Philosopher {
-    number: 
-    right_fork_in_use: 
-    left_fork_in_use (needs to be pointer to other philosopher):
-    currentAction: 
-}
-
 cyclus: eat --> sleep --> think --> eat
 simulation stops if philospher dies of starvation or they have eaten enough times
 
@@ -40,17 +33,6 @@ philosopher dies.
 • Philosopher number 1 sits next to philosopher number number_of_philosophers.
 Any other philosopher number N sits between philosopher number N - 1 and philosopher number N + 1.
 
-
----
-
-Any state change of a philosopher must be formatted as follows:
-◦ timestamp_in_ms X has taken a fork
-◦ timestamp_in_ms X is eating
-◦ timestamp_in_ms X is sleeping
-◦ timestamp_in_ms X is thinking
-◦ timestamp_in_ms X died
-Replace timestamp_in_ms with the current timestamp in milliseconds
-and X with the philosopher number.
 */
 
 // Your(s) program(s) should take the following arguments:
