@@ -4,12 +4,21 @@
 #include <iostream>
 
 Philosophers::Philosophers(int nbr, State state, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount, Forks* forkLeft, Forks* forkRight, std::chrono::system_clock::time_point startTimer)
-    : m_nbr(nbr), m_state(state), m_timeToDie(timeToDie), m_timeToEat(timeToEat), m_timeToSleep(timeToSleep), m_mustEatCount(mustEatCount), m_startTimer(startTimer)
+    : m_nbr(nbr),
+    m_state(state),
+    m_timeToDie(std::chrono::milliseconds(timeToDie)),
+    m_timeToEat(std::chrono::milliseconds(timeToEat)),
+    m_timeToSleep(std::chrono::milliseconds(timeToSleep)),
+    m_mustEatCount(mustEatCount),
+    m_startTimer(startTimer)
 {
     m_forks[LEFT] = forkLeft;
     m_forks[RIGHT] = forkRight;
-    m_thread = std::thread(startStateLogic);
 };
+
+void Philosophers::init() {
+    m_thread = std::thread(&Philosophers::startStateLogic, this);
+}
 
 int64_t Philosophers::currentTimeInMilliSeconds() {
     const auto end = std::chrono::high_resolution_clock::now();
@@ -39,7 +48,7 @@ void Philosophers::startEating() {
     m_lastMealTimer = std::chrono::high_resolution_clock::now();
     m_eatCount++;
     if (m_eatCount == m_mustEatCount) {
-        m_state = FINISHED;
+        m_state = State::FINISHED;
     }
     changeState();
 }
@@ -63,28 +72,28 @@ void Philosophers::checkIfDead() {
     const auto end = std::chrono::high_resolution_clock::now();
     const auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(m_lastMealTimer - end);
     if (milliseconds >= m_timeToDie) {
-        m_state = DEAD;
+        m_state = State::DEAD;
         std::cout << milliseconds.count() << " milliseconds: " << m_nbr << " died" << std::endl;
     }
 }
 
 void Philosophers::startStateLogic() {
     switch(m_state) {
-        case FORK:
+        case State::FORK:
             pickUpFork();
             break;
-        case EATING:
+        case State::EATING:
             startEating();
             break;
-        case SLEEPING:
+        case State::SLEEPING:
             goToSleep();
             break;
-        case THINKING:
+        case State::THINKING:
             startThinking();
             break;
-        case DEAD:
+        case State::DEAD:
             break;
-        case FINISHED:
+        case State::FINISHED:
             break;
         default:
             break;
@@ -94,25 +103,25 @@ void Philosophers::startStateLogic() {
 
 void Philosophers::changeState() {
     switch(m_state) {
-        case FORK:
+        case State::FORK:
             pickUpFork();
-            m_state = EATING;
+            m_state = State::EATING;
             break;
-        case EATING:
+        case State::EATING:
             startEating();
-            m_state = SLEEPING;
+            m_state = State::SLEEPING;
             break;
-        case SLEEPING:
+        case State::SLEEPING:
             goToSleep();
-            m_state = THINKING;
+            m_state = State::THINKING;
             break;
-        case THINKING:
+        case State::THINKING:
             startThinking();
-            m_state = FORK;
+            m_state = State::FORK;
             break;
-        case DEAD:
+        case State::DEAD:
             break;
-        case FINISHED:
+        case State::FINISHED:
             break;
         default:
             break;

@@ -32,25 +32,25 @@ void ThreadSimulation::initPhilosophers(int timeToDie, int timeToEat, int timeTo
     m_philo.reserve(m_totalPhilosophers);
 
     int i = 0;
-    Philosophers::State state = Philosophers::EATING;
+    Philosophers::State state = Philosophers::State::EATING;
     const auto startTimer = std::chrono::high_resolution_clock::now();
     while (i < m_totalPhilosophers) {
         switch (state) {
-        case Philosophers::EATING:
+        case Philosophers::State::EATING:
             if (m_totalPhilosophers == 0) {
                 m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, nullptr, &m_forks[i + 1], startTimer});
             } else {
                 m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, &m_forks[i - 1 < 0 ? m_totalPhilosophers - 1 : i - 1], &m_forks[i + 1], startTimer});
             }
-            state = Philosophers::SLEEPING;
+            state = Philosophers::State::SLEEPING;
             break;
-        case Philosophers::SLEEPING:
+        case Philosophers::State::SLEEPING:
             m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, &m_forks[i - 1], &m_forks[i + 1], startTimer});
-            state = Philosophers::THINKING;
+            state = Philosophers::State::THINKING;
             break;
-        case Philosophers::THINKING:
+        case Philosophers::State::THINKING:
             m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, &m_forks[i - 1], &m_forks[i + 1], startTimer});
-            state = Philosophers::EATING;
+            state = Philosophers::State::EATING;
             break;
         default:
             break;

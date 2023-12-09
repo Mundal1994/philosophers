@@ -8,7 +8,7 @@
 
 class Philosophers {
 public:
-    enum State {
+    enum class State {
         FORK,
         EATING,
         SLEEPING,
@@ -18,6 +18,7 @@ public:
     };
 
     Philosophers(int nbr, State state, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount, Forks* forkLeft, Forks* forkRight, std::chrono::system_clock::time_point startTimer);
+    void init();
 
     int64_t currentTimeInMilliSeconds();
 
@@ -36,6 +37,7 @@ private:
     };
 
     const int m_nbr;
+    State m_state;
     const std::chrono::milliseconds m_timeToDie;
     const std::chrono::milliseconds m_timeToEat;
     const std::chrono::milliseconds m_timeToSleep;
@@ -44,7 +46,6 @@ private:
     std::chrono::system_clock::time_point m_startTimer;
     std::chrono::system_clock::time_point m_lastMealTimer;
 
-    State m_state;
     std::array<Forks*, 2> m_forks;
     std::thread m_thread;
 };
