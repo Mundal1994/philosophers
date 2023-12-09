@@ -1,5 +1,7 @@
 #include "ThreadSimulation.h"
 
+#include <iostream>
+
 ThreadSimulation::ThreadSimulation(int total, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount)
     : m_totalPhilosophers(total)
 {
@@ -25,25 +27,25 @@ void ThreadSimulation::initPhilosophers(int timeToDie, int timeToEat, int timeTo
     m_philo.reserve(m_totalPhilosophers);
 
     int i = 0;
-    Philosophers::State state = Philosophers::State::EATING;
+    Philosophers::State state = Philosophers::State::FORK;
     const auto startTimer = std::chrono::high_resolution_clock::now();
     while (i < m_totalPhilosophers) {
         switch (state) {
-        case Philosophers::State::EATING:
+        case Philosophers::State::FORK:
             if (m_totalPhilosophers == 0) {
-                m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, nullptr, &m_forks[i + 1], startTimer});
+                m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, nullptr, &m_forks[i], startTimer, m_endGame});
             } else {
-                m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, &m_forks[i - 1 < 0 ? m_totalPhilosophers - 1 : i - 1], &m_forks[i + 1], startTimer});
+                m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, &m_forks[i - 1 < 0 ? m_totalPhilosophers - 1 : i - 1], &m_forks[i], startTimer, m_endGame});
             }
             state = Philosophers::State::SLEEPING;
             break;
         case Philosophers::State::SLEEPING:
-            m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, &m_forks[i - 1], &m_forks[i + 1], startTimer});
+            m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, &m_forks[i - 1], &m_forks[i], startTimer, m_endGame});
             state = Philosophers::State::THINKING;
             break;
         case Philosophers::State::THINKING:
-            m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, &m_forks[i - 1], &m_forks[i + 1], startTimer});
-            state = Philosophers::State::EATING;
+            m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, &m_forks[i - 1], &m_forks[i], startTimer, m_endGame});
+            state = Philosophers::State::FORK;
             break;
         default:
             break;

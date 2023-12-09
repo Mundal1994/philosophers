@@ -71,9 +71,11 @@ int main (int argc, char **argv) {
     const int timeToSleep {std::stoi(argv[4], 0, 10)};
     const int mustEat {argc == 6 ? std::stoi(argv[5], 0, 10) : -1};
 
+    std::cout << "total: " << philosopherTotal << " timetodie: " << timeToDie << " timetoeat: " << timeToEat << " timetosleep: " << timeToSleep << " mustEat: " << mustEat << std::endl;
     ThreadSimulation simulation {philosopherTotal, timeToDie, timeToEat, timeToSleep, mustEat};
     simulation.initSimulation();
-
-    testing::InitGoogleTest();
-    return (RUN_ALL_TESTS());
+    
+    return (0);
+    //testing::InitGoogleTest();
+    //return (RUN_ALL_TESTS());
 }

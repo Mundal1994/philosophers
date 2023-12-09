@@ -17,10 +17,10 @@ public:
         FINISHED,
     };
 
-    Philosophers(int nbr, State state, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount, Forks* forkLeft, Forks* forkRight, std::chrono::system_clock::time_point startTimer);
+    Philosophers(int nbr, State state, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount, Forks* forkLeft, Forks* forkRight, std::chrono::system_clock::time_point startTimer, bool &endGame);
     void init();
 
-    int64_t currentTimeInMilliSeconds();
+    auto currentTimeInMilliSeconds();
 
     void pickUpFork();
     void startEating();
@@ -42,9 +42,10 @@ private:
     const std::chrono::milliseconds m_timeToSleep;
     const int m_mustEatCount;
     int m_eatCount;
-    std::chrono::system_clock::time_point m_startTimer;
-    std::chrono::system_clock::time_point m_lastMealTimer;
+    std::chrono::high_resolution_clock::time_point m_startTimer;
+    std::chrono::high_resolution_clock::time_point m_lastMealTimer;
 
     std::array<Forks*, 2> m_forks;
+    bool &m_endGame;
     std::thread m_thread;
 };

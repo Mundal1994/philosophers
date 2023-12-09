@@ -3,14 +3,15 @@
 #include <chrono>
 #include <iostream>
 
-Philosophers::Philosophers(int nbr, State state, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount, Forks* forkLeft, Forks* forkRight, std::chrono::system_clock::time_point startTimer)
+Philosophers::Philosophers(int nbr, State state, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount, Forks* forkLeft, Forks* forkRight, std::chrono::high_resolution_clock::time_point startTimer, bool &endGame)
     : m_nbr(nbr),
     m_state(state),
     m_timeToDie(std::chrono::milliseconds(timeToDie)),
     m_timeToEat(std::chrono::milliseconds(timeToEat)),
     m_timeToSleep(std::chrono::milliseconds(timeToSleep)),
     m_mustEatCount(mustEatCount),
-    m_startTimer(startTimer)
+    m_startTimer(startTimer),
+    m_endGame(endGame)
 {
     m_forks[LEFT] = forkLeft;
     m_forks[RIGHT] = forkRight;
@@ -36,31 +37,32 @@ void Philosophers::init() {
     m_thread = std::thread(&Philosophers::changeState, this);
 }
 
-int64_t Philosophers::currentTimeInMilliSeconds() {
-    const auto end = std::chrono::high_resolution_clock::now();
+auto Philosophers::currentTimeInMilliSeconds() {
+    using namespace std::chrono;
     
-    auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(m_startTimer - end).count();
-    return milliseconds;
+    return duration_cast<milliseconds>(high_resolution_clock::now() - m_startTimer).count();
 }
 
 void Philosophers::pickUpFork() {
-    while (!m_forks[LEFT]->getStatus() || !m_forks[RIGHT]->getStatus()) {
+    while (m_forks[LEFT]->isInitialized()) {
         checkIfDead();
     }
-    m_forks[LEFT]->setStatus(true);
-    m_forks[RIGHT]->setStatus(true);
+    while (m_forks[RIGHT]->isInitialized()) {
+        checkIfDead();
+    }
+    
     std::cout << currentTimeInMilliSeconds() << " milliseconds: " << m_nbr << " has taken a fork" << std::endl;
 }
 
 void Philosophers::startEating() {
     
     std::cout << currentTimeInMilliSeconds() << " milliseconds: " << m_nbr << " is eating" << std::endl;
-    //std::this_thread::sleep_for(m_timeToEat);
+    std::this_thread::sleep_for(m_timeToEat);
     std::cout << currentTimeInMilliSeconds() << " milliseconds: " << m_nbr << " is FINISHED eating" << std::endl;
     
     
-    m_forks[LEFT]->setStatus(false);
-    m_forks[RIGHT]->setStatus(false);
+    m_forks[LEFT]->deInitialize();
+    m_forks[RIGHT]->deInitialize();
 
     std::cout << currentTimeInMilliSeconds() << " milliseconds: " << m_nbr << " put down forks" << std::endl;
     
@@ -82,9 +84,6 @@ void Philosophers::goToSleep() {
 
 void Philosophers::startThinking() {
     std::cout << currentTimeInMilliSeconds() << " milliseconds: " << m_nbr << " is thinking" << std::endl;
-    while (!m_forks[LEFT]->getStatus() || !m_forks[RIGHT]->getStatus()) {
-        checkIfDead();
-    }
 }
 
 void Philosophers::checkIfDead() {
@@ -97,6 +96,9 @@ void Philosophers::checkIfDead() {
 }
 
 void Philosophers::changeState() {
+    if (m_endGame && m_state != State::DEAD) {
+        m_state = State::FINISHED;
+    }
     switch(m_state) {
         case State::FORK:
             pickUpFork();
@@ -116,10 +118,14 @@ void Philosophers::changeState() {
             break;
         case State::DEAD:
             std::cout << "philosopher: " << m_nbr << " is dead. end game" << std::endl;
+            m_endGame = true;
             break;
         case State::FINISHED:
+            if (m_endGame) {
+                return;
+            }
             std::cout << "philosopher: " << m_nbr << " finished" << std::endl;
-            break;
+            return;
         default:
             break;
     }
