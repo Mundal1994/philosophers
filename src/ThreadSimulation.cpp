@@ -1,12 +1,5 @@
 #include "ThreadSimulation.h"
 
-ThreadSimulation::ThreadSimulation(int total, int timeToDie, int timeToEat, int timeToSleep)
-    : m_totalPhilosophers(total)
-{// , m_timeToDie(timeToDie), m_timeToEat(timeToEat), m_timeToSleep(timeToSleep), m_mustEatCount(-1)
-    initForks();
-    initPhilosophers(timeToDie, timeToEat, timeToSleep, -1);
-};
-
 ThreadSimulation::ThreadSimulation(int total, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount)
     : m_totalPhilosophers(total)
 {
@@ -55,6 +48,14 @@ void ThreadSimulation::initPhilosophers(int timeToDie, int timeToEat, int timeTo
         default:
             break;
         }
+        ++i;
+    }
+}
+
+void ThreadSimulation::initSimulation() {
+    int i {0};
+    while (i < m_totalPhilosophers) {
+        m_philo[i].init();
         ++i;
     }
 }

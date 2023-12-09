@@ -65,13 +65,15 @@ int main (int argc, char **argv) {
         return (0);
     }
 
-    //collectData();
+    const int philosopherTotal {std::stoi(argv[1], 0, 10)};
+    const int timeToDie {std::stoi(argv[2], 0, 10)};
+    const int timeToEat {std::stoi(argv[3], 0, 10)};
+    const int timeToSleep {std::stoi(argv[4], 0, 10)};
+    const int mustEat {argc == 6 ? std::stoi(argv[5], 0, 10) : -1};
 
-    int i = 1;
-    int total = argc;
-    while (i < total) {
-        std::cout << argv[i++] << std::endl;
-    }
+    ThreadSimulation simulation {philosopherTotal, timeToDie, timeToEat, timeToSleep, mustEat};
+    simulation.initSimulation();
+
     testing::InitGoogleTest();
     return (RUN_ALL_TESTS());
 }

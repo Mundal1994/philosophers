@@ -27,7 +27,6 @@ public:
     void goToSleep();
     void startThinking();
 
-    void startStateLogic();
     void changeState();
     void checkIfDead();
 private:
