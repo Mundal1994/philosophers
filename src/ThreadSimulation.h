@@ -11,6 +11,7 @@ private:
     std::vector<Philosophers> m_philo;
     std::vector<Forks> m_forks;
     bool m_endGame {false};
+    std::vector<std::thread> m_threads;
     // thread of philosphers?
 public:
     ThreadSimulation(int total, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount);

@@ -47,5 +47,4 @@ private:
 
     std::array<Forks*, 2> m_forks;
     bool &m_endGame;
-    std::thread m_thread;
 };

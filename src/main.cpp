@@ -38,6 +38,10 @@ Any other philosopher number N sits between philosopher number N - 1 and philoso
 // number_of_philosophers time_to_die time_to_eat time_to_sleep
 // [number_of_times_each_philosopher_must_eat]
 
+
+#include <chrono>
+#include <iostream>
+#include <thread>
 void printUsage(void) {
     std::cout << "Usage: ./philo number_of_philosphers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]" << std::endl;
     std::cout << "[number_of_times_each_philosopher_must_eat] is optional" << std::endl;
@@ -73,6 +77,7 @@ int main (int argc, char **argv) {
 
     std::cout << "total: " << philosopherTotal << " timetodie: " << timeToDie << " timetoeat: " << timeToEat << " timetosleep: " << timeToSleep << " mustEat: " << mustEat << std::endl;
     ThreadSimulation simulation {philosopherTotal, timeToDie, timeToEat, timeToSleep, mustEat};
+    std::cout << "initSimulation" << std::endl;
     simulation.initSimulation();
     
     return (0);

@@ -33,8 +33,6 @@ void Philosophers::init() {
         default:
             break;
     }
-    
-    m_thread = std::thread(&Philosophers::changeState, this);
 }
 
 auto Philosophers::currentTimeInMilliSeconds() {
@@ -55,9 +53,9 @@ void Philosophers::pickUpFork() {
 }
 
 void Philosophers::startEating() {
-    
     std::cout << currentTimeInMilliSeconds() << " milliseconds: " << m_nbr << " is eating" << std::endl;
-    std::this_thread::sleep_for(m_timeToEat);
+    
+    std::this_thread::sleep_until(std::chrono::high_resolution_clock::now() + m_timeToEat); // sleep function doesn't work
     std::cout << currentTimeInMilliSeconds() << " milliseconds: " << m_nbr << " is FINISHED eating" << std::endl;
     
     
@@ -78,7 +76,7 @@ void Philosophers::startEating() {
 
 void Philosophers::goToSleep() {
     std::cout << currentTimeInMilliSeconds() << " milliseconds: " << m_nbr << " is sleeping" << std::endl;
-    std::this_thread::sleep_for(m_timeToSleep);
+    std::this_thread::sleep_until(m_startTimer + m_timeToSleep);
     checkIfDead();
 }
 
