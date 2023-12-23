@@ -29,11 +29,9 @@ void ThreadSimulation::initPhilosophers(int timeToDie, int timeToEat, int timeTo
     int i = 0;
     Philosophers::State state = Philosophers::State::FORK;
     const auto startTimer = std::chrono::high_resolution_clock::now();
-    std::cout << "før while loop" << std::endl;
     while (i < m_totalPhilosophers) {
         switch (state) {
         case Philosophers::State::FORK:
-            std::cout << "pick fork state" << std::endl;
             if (m_totalPhilosophers == 0) {
                 m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, nullptr, &m_forks[i], startTimer, m_endGame});
             } else {
@@ -42,12 +40,10 @@ void ThreadSimulation::initPhilosophers(int timeToDie, int timeToEat, int timeTo
             state = Philosophers::State::SLEEPING;
             break;
         case Philosophers::State::SLEEPING:
-        std::cout << "pick sleeping state" << std::endl;
             m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, &m_forks[i - 1], &m_forks[i], startTimer, m_endGame});
             state = Philosophers::State::THINKING;
             break;
         case Philosophers::State::THINKING:
-        std::cout << "pick thinking state" << std::endl;
             m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, &m_forks[i - 1], &m_forks[i], startTimer, m_endGame});
             state = Philosophers::State::FORK;
             break;
@@ -56,7 +52,6 @@ void ThreadSimulation::initPhilosophers(int timeToDie, int timeToEat, int timeTo
         }
         ++i;
     }
-    std::cout << "efter while loop" << std::endl;
 }
 
 void ThreadSimulation::initSimulation() {

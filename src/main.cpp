@@ -77,7 +77,6 @@ int main (int argc, char **argv) {
 
     std::cout << "total: " << philosopherTotal << " timetodie: " << timeToDie << " timetoeat: " << timeToEat << " timetosleep: " << timeToSleep << " mustEat: " << mustEat << std::endl;
     ThreadSimulation simulation {philosopherTotal, timeToDie, timeToEat, timeToSleep, mustEat};
-    std::cout << "initSimulation" << std::endl;
     simulation.initSimulation();
     
     return (0);
