@@ -2,6 +2,9 @@
 #include "ThreadSimulation.h"
 
 #include <gtest/gtest.h>
+
+std::vector<bool> ThreadSimulation::m_forks {{false, false}};
+std::mutex ThreadSimulation::m_mutex;
 /*
 
 philosopherBase {

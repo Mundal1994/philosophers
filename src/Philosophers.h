@@ -1,10 +1,12 @@
 #pragma once
 
-#include "Forks.h"
+//#include "Forks.h"
 
 #include <array>
 #include <memory>
 #include <thread>
+#include <vector>
+#include <mutex>
 
 class Philosophers {
 public:
@@ -17,7 +19,8 @@ public:
         FINISHED,
     };
 
-    Philosophers(int nbr, State state, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount, Forks* forkLeft, Forks* forkRight, std::chrono::system_clock::time_point startTimer, bool &endGame);
+    //Philosophers(int nbr, State state, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount, Forks* forkLeft, Forks* forkRight, std::chrono::system_clock::time_point startTimer, bool &endGame);
+    Philosophers(int nbr, State state, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount, std::chrono::system_clock::time_point startTimer, bool &endGame, int total);
     void init();
 
     auto currentTimeInMilliSeconds();
@@ -45,6 +48,7 @@ private:
     std::chrono::high_resolution_clock::time_point m_startTimer;
     std::chrono::high_resolution_clock::time_point m_lastMealTimer;
 
-    std::array<Forks*, 2> m_forks;
+    //std::array<Forks*, 2> m_forks;
     bool &m_endGame;
+    int m_totalPhilo;
 };
