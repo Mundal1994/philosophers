@@ -115,7 +115,6 @@ void Philosophers::changeState() {
             startThinking();
             break;
         case State::DEAD:
-            //printMessage(m_nbr, " died");
             m_endGame = true;
             return;
         case State::FINISHED:
