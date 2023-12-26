@@ -3,6 +3,8 @@
 #include "Philosophers.h"
 
 #include <thread>
+#include <vector>
+#include <mutex>
 
 class ThreadSimulation {
 private:

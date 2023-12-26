@@ -1,6 +1,7 @@
 #include "ThreadSimulation.h"
 
 #include <iostream>
+#include <sstream>
 
 ThreadSimulation::ThreadSimulation(int total, int timeToDie, int timeToEat, int timeToSleep, int mustEatCount)
     : m_totalPhilosophers(total)
@@ -31,6 +32,12 @@ namespace {
         }
         return (result);
     };
+
+    void printDebugInfo(std::string str) {
+        std::stringstream msg;
+        msg << str << std::endl;
+        std::cout << msg.str();
+    }
 }
 
 bool ThreadSimulation::pickUpForkOrPutDown(int rightForkIndx, int totalPhilo, bool status) {
@@ -46,24 +53,27 @@ bool ThreadSimulation::pickUpForkOrPutDown(int rightForkIndx, int totalPhilo, bo
     } else {
         return false;
     }
-    std::cout << "mutex is unlocked ";
-    if (status) {
-        std::cout << "philosopher " << rightForkIndx + 1 << " picked up forks " << leftForkIndx << " and " << rightForkIndx << std::endl;
-    } else {
-        std::cout << "philosopher " << rightForkIndx + 1<< " put down forks " << leftForkIndx << " and " << rightForkIndx << std::endl;
-    }
 
-    int i = 0;
-    std::cout << "forks: ";
-    while (i < totalPhilo) {
-        if (m_forks[i]) {
-            std::cout << "true, ";
+    if (totalPhilo < 50) {
+        if (status) {
+            printDebugInfo("mutex is unlocked: philosopher" + std::to_string(rightForkIndx + 1) + " picked up forks " + std::to_string(leftForkIndx) + " and " + std::to_string(rightForkIndx));
         } else {
-            std::cout << "false, ";
+            printDebugInfo("mutex is unlocked: philosopher" + std::to_string(rightForkIndx + 1) + " put down forks " + std::to_string(leftForkIndx) + " and " + std::to_string(rightForkIndx));
         }
-        ++i;
+
+        int i = 0;
+        std::stringstream msg;
+        msg << "forks: ";
+        while (i < totalPhilo) {
+            if (m_forks[i]) {
+                msg << "true, ";
+            } else {
+                msg << "false, ";
+            }
+            ++i;
+        }
+        printDebugInfo(msg.str());
     }
-    std::cout << std::endl;
 
     return true;
 }
@@ -85,10 +95,6 @@ void ThreadSimulation::initPhilosophers(int timeToDie, int timeToEat, int timeTo
             state = Philosophers::State::SLEEPING;
             break;
         case Philosophers::State::SLEEPING:
-            m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, startTimer, m_endGame, m_totalPhilosophers});
-            state = Philosophers::State::THINKING;
-            break;
-        case Philosophers::State::THINKING:
             m_philo.push_back(Philosophers{i + 1, state, timeToDie, timeToEat, timeToSleep, mustEatCount, startTimer, m_endGame, m_totalPhilosophers});
             state = Philosophers::State::FORK;
             break;
@@ -114,5 +120,5 @@ void ThreadSimulation::initSimulation() {
         }
         ++i;
     }
-    std::cout << "simulation ended" << std::endl;
+    std::cout << "Simulation ended" << std::endl;
 }

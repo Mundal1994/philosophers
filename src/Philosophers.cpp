@@ -1,6 +1,6 @@
 #include "Philosophers.h"
 #include "ThreadSimulation.h"
-#include <chrono>
+
 #include <iostream>
 #include <sstream>
 
@@ -17,26 +17,6 @@ Philosophers::Philosophers(int nbr, State state, int timeToDie, int timeToEat, i
 {
 };
 
-void Philosophers::init() {
-    std::cout << "------------" << std::endl;
-    std::cout << "Philosopher " << m_nbr << std::endl;
-    m_lastMealTimer = std::chrono::high_resolution_clock::now();
-
-    switch (m_state) {
-        case State::EATING:
-            std::cout << "init state: eating" << std::endl;
-            break;
-        case State::SLEEPING:
-            std::cout << "init state: sleeping" << std::endl;
-            break;
-        case State::THINKING:
-            std::cout << "init state: thinking" << std::endl;
-            break;
-        default:
-            break;
-    }
-}
-
 auto Philosophers::currentTimeInMilliSeconds() {
     using namespace std::chrono;
     
@@ -47,6 +27,23 @@ void Philosophers::printMessage(const int nbr, const std::string str) {
     std::stringstream msg;
     msg << currentTimeInMilliSeconds() << " milliseconds: " << nbr << str << std::endl;
     std::cout << msg.str();
+}
+
+void Philosophers::init() {
+    std::stringstream msg;
+    m_lastMealTimer = std::chrono::high_resolution_clock::now();
+
+    switch (m_state) {
+        case State::FORK:
+            msg << " init state: pick fork";
+            break;
+        case State::SLEEPING:
+            msg << " init state: sleeping";
+            break;
+        default:
+            break;
+    }
+    printMessage(m_nbr, msg.str());
 }
 
 void Philosophers::pickUpFork() {
@@ -76,8 +73,9 @@ void Philosophers::startEating() {
 
 void Philosophers::goToSleep() {
     printMessage(m_nbr, " is sleeping");
-    std::cout << currentTimeInMilliSeconds() << " milliseconds: " << m_nbr << " is sleeping" << std::endl;
+
     std::this_thread::sleep_until(std::chrono::high_resolution_clock::now() + m_timeToSleep);
+
     checkIfDead();
 }
 
