@@ -32,6 +32,8 @@ public:
 
     void changeState();
     void checkIfDead();
+
+    void printMessage(int nbr, std::string str);
 private:
     enum ForkSide {
         LEFT = 0,
