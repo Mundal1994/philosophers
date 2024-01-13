@@ -14,7 +14,6 @@ add_executable(philo   src/main.cpp
                        src/ThreadSimulation.cpp
                        src/ThreadSimulation_test.cpp
                        src/Philosophers.cpp
-                       #src/Forks.cpp
 ) # add cpp files
 
 target_link_libraries(philo PRIVATE gtest) # link google test to this executable
