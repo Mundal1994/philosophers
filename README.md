@@ -1,5 +1,7 @@
 # About
 
+This is my first multi threading project. It consist of trying to precisely time a group of philosophers on when to pick up forks and eat spaghetti without dying from hunger.
+
 One or more philosophers are sitting at a round table either eating, either thinking,
 either sleeping. While they are eating, they do not think or sleep; while thinking
 they don’t eat or sleep; and, of course, while sleeping, they do not eat or think.
