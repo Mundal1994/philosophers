@@ -17,18 +17,23 @@ Every philosopher needs to eat and they should never starve.
 
 ## How to run
 
-The program should takes the following arguments: number_of_philosophers time_to_die
-time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
+        ./philosophers number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
+
+The program takes the following arguments: 
 
     number_of_philosophers: is the number of philosophers and also the number
 of forks.
+    
     time_to_die: is in milliseconds, if a philosopher doesn’t start eating ’time_to_die’
 milliseconds after starting their last meal or the beginning of the simulation,
 it dies.
+    
     time_to_eat: is in milliseconds and is the time it takes for a philosopher to
 eat. During that time they will need to keep the two forks.
+    
     time_to_sleep: is in milliseconds and is the time the philosopher will spend
 sleeping.
+    
     number_of_times_each_philosopher_must_eat: argument is optional, if all
 philosophers eat at least ’number_of_times_each_philosopher_must_eat’ the
 simulation will stop. If not specified, the simulation will stop only at the death
@@ -39,10 +44,15 @@ Each philosopher has been given a number from 1 to ’number_of_philosophers’.
 philosopher N + 1.
 
 Output of the program will look something like this:
+
     timestamp_in_ms X has taken a fork
+    
     timestamp_in_ms X is eating
+    
     timestamp_in_ms X is sleeping
+    
     timestamp_in_ms X is thinking
+    
     timestamp_in_ms X died
 
 Each philosopher is a thread.
